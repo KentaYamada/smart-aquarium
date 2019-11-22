@@ -12,18 +12,21 @@ from backend.tests.controller.base import BaseApiTestCase
 
 class TestAuthApi(BaseApiTestCase):
     @patch('backend.model.user.User')
-    @patch('backend.mapper.auth.AuthMapper')
-    def test_login_success(self, mock_user, mock_auth_mapper):
-        mock_user.find_user_by_email = Mock()
-        mock_user.find_user_by_email.return_value = User(
+    @patch('backend.mapper.auth.AuthMapper.generate_auth_token')
+    @patch('backend.mapper.auth.AuthMapper.get_logged_in_user_token')
+    @patch('backend.mapper.user.UserMapper.find_user_by_email')
+    def test_login_success(self,
+                           mock_find_user_by_email,
+                           mock_get_logged_in_user_token,
+                           mock_generate_auth_token,
+                           mock_user):
+        mock_find_user_by_email.return_value = User(
             1, 'Taro', 'taro@email.com', 'taro'
         )
+        mock_get_logged_in_user_token.return_value = False
+        mock_generate_auth_token.return_value = 'test'
         mock_user.verify_password = Mock()
         mock_user.verify_password.return_value = True
-        mock_auth_mapper.get_logged_in_user_token = Mock()
-        mock_auth_mapper.return_value = ''
-        mock_auth_mapper.generate_auth_token = Mock()
-        mock_auth_mapper.generate_auth_token.return_value = 'test_token'
         data = json.dumps({
             'email': 'test@email.com',
             'password': 'test'
