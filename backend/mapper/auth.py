@@ -9,9 +9,9 @@ class AuthMapper:
         return 'secret_token'
 
     @classmethod
-    def generate_auth_token(self, user):
-        if user is None or not isinstance(user, User):
-            raise ValueError('Invalid argumant: user')
+    def generate_auth_token(cls, user):
+        # if user is None or not isinstance(user, User):
+        #     raise ValueError('Invalid argumant: user')
         return 'new_token'
 
     @classmethod
@@ -19,3 +19,7 @@ class AuthMapper:
         if not token:
             raise ValueError('token is empty')
         return True
+
+    @classmethod
+    def find_by_token(cls, token):
+        return None

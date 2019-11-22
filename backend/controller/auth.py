@@ -9,6 +9,7 @@ from backend.libs.api_response import (
     ApiResponse
 )
 from backend.mapper.auth import AuthMapper
+from backend.mapper.black_list import BlackListMapper
 from backend.mapper.user import UserMapper
 
 
@@ -43,7 +44,7 @@ def login():
     # generate token
     token = AuthMapper.generate_auth_token(user)
     if not token:
-        raise InternalServerError(description='Failed token publish')
+        raise InternalServerError(description='Failed publish token')
 
     response = {'logged_in': True, 'token': token}
     return ApiResponse(STATUS_OK, 'Login successfully', response)
@@ -65,3 +66,34 @@ def logout():
 
     response = {'logged_out': True, 'token': ''}
     return ApiResponse(STATUS_OK, 'Logged out', response)
+
+
+@bp.route('/reflesh', methods=['POST'])
+def reflesh():
+    data = request.get_json()
+    if data is None:
+        raise BadRequest(description='Request has empty data')
+
+    allow_fields = {'token'}
+    if not data.keys() >= allow_fields:
+        raise BadRequest('Request data has invalid fields')
+
+    is_black_list = BlackListMapper.token_in_black_list(data['token'])
+    if is_black_list:
+        raise BadRequest(description='Token in blacklist')
+
+    auth_data = AuthMapper.find_by_token(data['token'])
+    if auth_data is None:
+        raise BadRequest(description='Invalid token')
+
+    reflesh_token = AuthMapper.generate_auth_token(auth_data)
+    if not reflesh_token:
+        raise InternalServerError(description='Failed publish token')
+
+    # dispose current token & add black list
+    is_disposed = AuthMapper.dispose_token(data['token'])
+    if not is_disposed:
+        raise InternalServerError(description='Failed dispose token')
+
+    response = {'token': reflesh_token}
+    return ApiResponse(STATUS_OK, data=response)
