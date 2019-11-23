@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_jwt_extended import JWTManager
+# from flask_jwt_extended import JWTManager
 from werkzeug.exceptions import (
     BadRequest,
     Conflict,
@@ -8,19 +8,21 @@ from werkzeug.exceptions import (
     InternalServerError,
     Unauthorized
 )
+from backend.config import get_config_by_env
 from backend.libs.api_error_handler import api_error_handler
-from backend.libs.jwt_handler import (
-    user_loader_handler,
-    user_loader_error_handler,
-    token_in_blacklist_loader_handler
-)
+# from backend.libs.jwt_handler import (
+#     user_loader_handler,
+#     user_loader_error_handler,
+#     token_in_blacklist_loader_handler
+# )
 from backend.controller import get_blueprints
 
 
 # Create entry point
+config = get_config_by_env()
+
 app = Flask(__name__)
-app.debug = True
-app.port = 5000
+app.config.from_object(config)
 
 # Register handlers
 app.register_error_handler(BadRequest, api_error_handler)
@@ -35,10 +37,10 @@ blueprints = get_blueprints()
 for b in blueprints:
     app.register_blueprint(b)
 
-# JWT authorization
-jwt = JWTManager(app)
+# JWT authorization (if needed)
+# jwt = JWTManager(app)
 
 # Register handlers
-jwt.user_loader_callback_loader(user_loader_handler)
-jwt.user_loader_error_loader(user_loader_error_handler)
-jwt.token_in_blacklist_loader(token_in_blacklist_loader_handler)
+# jwt.user_loader_callback_loader(user_loader_handler)
+# jwt.user_loader_error_loader(user_loader_error_handler)
+# jwt.token_in_blacklist_loader(token_in_blacklist_loader_handler)
