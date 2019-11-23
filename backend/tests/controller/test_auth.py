@@ -6,7 +6,6 @@ from backend.libs.api_response import (
     STATUS_INTERNAL_SERVER_ERROR,
     STATUS_UNAUTHORIZED
 )
-from backend.model.user import User
 from backend.tests.controller.base import BaseApiTestCase
 
 
@@ -23,7 +22,7 @@ class TestAuthApi(BaseApiTestCase):
         )
         body = json.loads(res.get_data())
         self.assertEqual(STATUS_OK, res.status_code)
-        self.assertEqual('demo', body['data']['token'])
+        self.assertEqual('demo', body['token'])
 
     def test_login_when_logged_in_token(self):
         data = json.dumps({
@@ -37,7 +36,7 @@ class TestAuthApi(BaseApiTestCase):
         )
         body = json.loads(res.get_data())
         self.assertEqual(STATUS_OK, res.status_code)
-        self.assertEqual('demo', body['data']['token'])
+        self.assertEqual('demo', body['token'])
 
     @patch('backend.mapper.user.UserMapper.find_user_by_email')
     def test_login_when_not_exist_user(self, mock_find_user_by_email):
@@ -107,8 +106,8 @@ class TestAuthApi(BaseApiTestCase):
         )
         body = json.loads(res.get_data())
         self.assertEqual(STATUS_OK, res.status_code)
-        self.assertTrue(body['data']['logged_out'])
-        self.assertEqual('', body['data']['token'])
+        self.assertTrue(body['logged_out'])
+        self.assertEqual('', body['token'])
 
     @patch('backend.mapper.auth.AuthMapper.dispose_token')
     def test_logout_when_dispose_token_failure(self, mock_dispose_token):
@@ -152,7 +151,7 @@ class TestAuthApi(BaseApiTestCase):
         )
         body = json.loads(res.get_data())
         self.assertEqual(STATUS_OK, res.status_code)
-        self.assertEqual('demo', body['data']['token'])
+        self.assertEqual('demo', body['token'])
 
     def test_reflesh_when_request_is_null(self):
         res = self.client.post(

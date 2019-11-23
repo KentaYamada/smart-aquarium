@@ -27,8 +27,9 @@ class ApiResponse(Response):
 
     def __get_response_body(self, message, data, errors):
         body = {
-            'data': data,
             'errors': errors,
             'message': message
         }
+        if data is not None and isinstance(data, dict):
+            body.update(data)
         return json.dumps(body, ensure_ascii=False, indent=2)
