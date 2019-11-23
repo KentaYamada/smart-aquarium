@@ -23,25 +23,22 @@ def login():
         raise BadRequest()
 
     allow_fields = {'email', 'password'}
-    if not data.keys() <= allow_fields:
+    if not data.keys() >= allow_fields:
         raise BadRequest()
 
     user = UserMapper.find_user_by_email('test')
     if user is None:
         raise Unauthorized()
 
-    # verify password
     is_match = user.verify_password(data['password'])
     if not is_match:
         raise Unauthorized(description='Password unmatch')
 
-    # get already logged in user token
     logged_in_token = AuthMapper.get_logged_in_user_token(user.id)
     if logged_in_token:
         response = {'logged_in': True, 'token': logged_in_token}
         return ApiResponse(STATUS_OK, 'Already logged in', response)
 
-    # generate token
     token = AuthMapper.generate_auth_token(user)
     if not token:
         raise InternalServerError(description='Failed publish token')
@@ -60,6 +57,7 @@ def logout():
     if not data.keys() >= allow_fields:
         raise BadRequest('Invalid fields')
 
+    # dispose token & add black list
     is_disposed = AuthMapper.dispose_token(data['token'])
     if not is_disposed:
         raise InternalServerError(description='Failed dispose token')
@@ -90,7 +88,7 @@ def reflesh():
     if not reflesh_token:
         raise InternalServerError(description='Failed publish token')
 
-    # dispose current token & add black list
+    # dispose token & add black list
     is_disposed = AuthMapper.dispose_token(data['token'])
     if not is_disposed:
         raise InternalServerError(description='Failed dispose token')

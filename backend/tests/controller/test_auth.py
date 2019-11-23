@@ -1,5 +1,5 @@
 import json
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 from backend.libs.api_response import (
     STATUS_OK,
     STATUS_BAD_REQUEST,
@@ -11,22 +11,7 @@ from backend.tests.controller.base import BaseApiTestCase
 
 
 class TestAuthApi(BaseApiTestCase):
-    @patch('backend.model.user.User')
-    @patch('backend.mapper.auth.AuthMapper.generate_auth_token')
-    @patch('backend.mapper.auth.AuthMapper.get_logged_in_user_token')
-    @patch('backend.mapper.user.UserMapper.find_user_by_email')
-    def test_login_success(self,
-                           mock_find_user_by_email,
-                           mock_get_logged_in_user_token,
-                           mock_generate_auth_token,
-                           mock_user):
-        mock_find_user_by_email.return_value = User(
-            1, 'Taro', 'taro@email.com', 'taro'
-        )
-        mock_get_logged_in_user_token.return_value = False
-        mock_generate_auth_token.return_value = 'test'
-        mock_user.verify_password = Mock()
-        mock_user.verify_password.return_value = True
+    def test_login_success(self):
         data = json.dumps({
             'email': 'test@email.com',
             'password': 'test'
@@ -36,7 +21,23 @@ class TestAuthApi(BaseApiTestCase):
             content_type=self.CONTENT_TYPE,
             data=data
         )
+        body = json.loads(res.get_data())
         self.assertEqual(STATUS_OK, res.status_code)
+        self.assertEqual('demo', body['data']['token'])
+
+    def test_login_when_logged_in_token(self):
+        data = json.dumps({
+            'email': 'test@email.com',
+            'password': 'test'
+        })
+        res = self.client.post(
+            '/api/auth/login',
+            content_type=self.CONTENT_TYPE,
+            data=data
+        )
+        body = json.loads(res.get_data())
+        self.assertEqual(STATUS_OK, res.status_code)
+        self.assertEqual('demo', body['data']['token'])
 
     @patch('backend.mapper.user.UserMapper.find_user_by_email')
     def test_login_when_not_exist_user(self, mock_find_user_by_email):
@@ -64,23 +65,9 @@ class TestAuthApi(BaseApiTestCase):
             content_type=self.CONTENT_TYPE,
             data=data
         )
-        self.assertEqual(STATUS_UNAUTHORIZED, res.status_code)
-
-    @patch('backend.mapper.auth.AuthMapper.get_logged_in_user_token')
-    def test_login_when_logged_in_token(self, mock_get_logged_in_user_token):
-        mock_get_logged_in_user_token.return_value = 'test_token'
-        data = json.dumps({
-            'email': 'test@email.com',
-            'password': 'test'
-        })
-        res = self.client.post(
-            '/api/auth/login',
-            content_type=self.CONTENT_TYPE,
-            data=data
-        )
         body = json.loads(res.get_data())
-        self.assertEqual(STATUS_OK, res.status_code)
-        self.assertEqual('test_token', body['data']['token'])
+        self.assertEqual(STATUS_UNAUTHORIZED, res.status_code)
+        self.assertEqual('Password unmatch', body['message'])
 
     def test_login_when_request_is_null(self):
         res = self.client.post(
@@ -94,7 +81,7 @@ class TestAuthApi(BaseApiTestCase):
         res = self.client.post(
             '/api/auth/login',
             content_type=self.CONTENT_TYPE,
-            data={}
+            data=json.dumps({})
         )
         self.assertEqual(STATUS_BAD_REQUEST, res.status_code)
 
@@ -112,15 +99,16 @@ class TestAuthApi(BaseApiTestCase):
             )
             self.assertEqual(STATUS_BAD_REQUEST, res.status_code)
 
-    @patch('backend.mapper.auth.AuthMapper.dispose_token')
-    def test_logout_success(self, mock_dispose_token):
-        mock_dispose_token.return_value = True
+    def test_logout_success(self):
         res = self.client.post(
             '/api/auth/logout',
             content_type=self.CONTENT_TYPE,
             data=json.dumps({'token': 'test'})
         )
+        body = json.loads(res.get_data())
         self.assertEqual(STATUS_OK, res.status_code)
+        self.assertTrue(body['data']['logged_out'])
+        self.assertEqual('', body['data']['token'])
 
     @patch('backend.mapper.auth.AuthMapper.dispose_token')
     def test_logout_when_dispose_token_failure(self, mock_dispose_token):
@@ -156,30 +144,7 @@ class TestAuthApi(BaseApiTestCase):
         )
         self.assertEqual(STATUS_BAD_REQUEST, res.status_code)
 
-    def test_logout_when_token_is_empty(self):
-        with self.assertRaises(ValueError):
-            for v in ('', None):
-                self.client.post(
-                    '/api/auth/logout',
-                    content_type=self.CONTENT_TYPE,
-                    data=json.dumps({'token': v})
-                )
-
-    @patch('backend.mapper.auth.AuthMapper.dispose_token')
-    @patch('backend.mapper.auth.AuthMapper.generate_auth_token')
-    @patch('backend.mapper.auth.AuthMapper.find_by_token')
-    @patch('backend.mapper.black_list.BlackListMapper.token_in_black_list')
-    def test_reflesh_success(self,
-                             mock_token_in_black_list,
-                             mock_find_by_token,
-                             mock_generate_auth_token,
-                             mock_dispose_token):
-        mock_token_in_black_list.return_value = False
-        mock_find_by_token.return_value = User(
-            1, 'test', 'test@email.com', 'test'
-        )
-        mock_generate_auth_token.return_value = 'test'
-        mock_dispose_token.return_value = True
+    def test_reflesh_success(self):
         res = self.client.post(
             '/api/auth/reflesh',
             content_type=self.CONTENT_TYPE,
@@ -187,7 +152,7 @@ class TestAuthApi(BaseApiTestCase):
         )
         body = json.loads(res.get_data())
         self.assertEqual(STATUS_OK, res.status_code)
-        self.assertEqual('test', body['data']['token'])
+        self.assertEqual('demo', body['data']['token'])
 
     def test_reflesh_when_request_is_null(self):
         res = self.client.post(
@@ -241,13 +206,8 @@ class TestAuthApi(BaseApiTestCase):
         self.assertEqual('Invalid token', body['message'])
 
     @patch('backend.mapper.auth.AuthMapper.generate_auth_token')
-    @patch('backend.mapper.auth.AuthMapper.find_by_token')
     def test_reflesh_when_generate_token_failure(self,
-                                                 mock_find_by_token,
                                                  mock_generate_auth_token):
-        mock_find_by_token.return_value = User(
-            1, 'test', 'test@email.com', 'test'
-        )
         mock_generate_auth_token.return_value = ''
         res = self.client.post(
             '/api/auth/reflesh',
@@ -259,19 +219,8 @@ class TestAuthApi(BaseApiTestCase):
         self.assertEqual('Failed publish token', body['message'])
 
     @patch('backend.mapper.auth.AuthMapper.dispose_token')
-    @patch('backend.mapper.auth.AuthMapper.generate_auth_token')
-    @patch('backend.mapper.auth.AuthMapper.find_by_token')
-    @patch('backend.mapper.black_list.BlackListMapper.token_in_black_list')
     def test_reflesh_when_dispose_token_failure(self,
-                                                mock_token_in_black_list,
-                                                mock_find_by_token,
-                                                mock_generate_auth_token,
                                                 mock_dispose_token):
-        mock_token_in_black_list.return_value = False
-        mock_find_by_token.return_value = User(
-            1, 'test', 'test@email.com', 'test'
-        )
-        mock_generate_auth_token.return_value = 'test'
         mock_dispose_token.return_value = False
         res = self.client.post(
             '/api/auth/reflesh',
