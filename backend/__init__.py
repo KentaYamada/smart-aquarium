@@ -15,7 +15,7 @@ from backend.libs.api_error_handler import api_error_handler
 #     user_loader_error_handler,
 #     token_in_blacklist_loader_handler
 # )
-from backend.controller import get_blueprints
+from backend.controller import register_blueprints
 
 
 # Create entry point
@@ -33,9 +33,7 @@ app.register_error_handler(InternalServerError, api_error_handler)
 app.register_error_handler(Unauthorized, api_error_handler)
 
 # Register blueprints
-blueprints = get_blueprints()
-for b in blueprints:
-    app.register_blueprint(b)
+register_blueprints(app)
 
 # JWT authorization (if needed)
 # jwt = JWTManager(app)
