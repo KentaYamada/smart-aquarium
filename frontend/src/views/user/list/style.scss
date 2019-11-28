@@ -1,0 +1,22 @@
+.user-list {
+    .scrollable-table-header {
+        margin-top: 20px;
+    }
+    .scrollable-table-body {
+        max-height: 500px;
+        overflow-x: scroll;
+    }
+    .table {
+        .name-col {
+            width: 30%;
+        }
+        .email-col {
+            width: 40%;
+        }
+        .action-buttons {
+            width: 30%;
+            text-align: center;
+        }
+    }
+}
+
