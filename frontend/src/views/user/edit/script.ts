@@ -25,7 +25,7 @@ export default Vue.extend({
             SAVE,
         ]),
         handleSave(): void {
-            this.SAVE(this.user)
+            this.save(this.user)
                 .then((response: AxiosResponse) => {
                     this.$emit('close');
                     this.$emit(SAVE_SUCCESS, response.data.message);
