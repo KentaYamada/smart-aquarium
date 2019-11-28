@@ -2,12 +2,21 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from '@/store';
 import LoginForm from '@/views/login/LoginForm.vue';
+import Top from '@/views/top/Top.vue';
 import UserList from '@/views/user/list/UserList.vue';
 
 
 Vue.use(VueRouter);
 
 const routes = [
+    {
+        path: '/',
+        name: 'top',
+        component: Top,
+        meta: {
+            requireAuth: true,
+        },
+    },
     {
         path: '/users',
         name: 'user',
