@@ -22,7 +22,7 @@ export default Vue.extend({
     data() {
         return {
             navigations,
-            isShowNav: false,
+            isShowNavi: false,
         };
     },
     computed: {
@@ -35,14 +35,17 @@ export default Vue.extend({
             LOGOUT,
         ]),
         handleToggleNavi(): void {
-            this.isShowNav = !this.isShowNav;
+            this.isShowNavi = !this.isShowNavi;
+        },
+        handleCloseNavi(): void {
+            this.isShowNavi = false;
         },
         handleLogout(): void {
             this.logout()
                 .then(() => {
                     this._logoutSucceeded();
                 })
-                .cath(() => {
+                .catch(() => {
                     this._logoutFailure();
                 });
         },
@@ -52,6 +55,7 @@ export default Vue.extend({
                 type: 'is-success',
             };
             this.$buefy.toast.open(config);
+            this.$router.push('/login');
         },
         _logoutFailure(): void {
             const config: ToastConfig = {

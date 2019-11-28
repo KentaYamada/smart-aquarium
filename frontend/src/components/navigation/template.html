@@ -1,36 +1,46 @@
-<div class="navbar" role="navigation" aria-label="main navigation" v-show="isLoggedIn">
+<nav class="navbar" role="navigation" aria-label="main navigation" v-if="isLoggedIn">
     <div class="navbar-brand">
-        <router-link :to="{path: '/'}" class="navbar-item">
-            Flask Vuejs Start up kit
+        <router-link :to="{ path: '/' }" class="navbar-item">
+            Flask/Vuejs Start up kit
         </router-link>
-        <a class="navbar-burger burger" role="button" aria-label="main" data-target="nav-groups" @click="handleToggleNavi()">
-            <span area-hidden="true"></span>
-            <span></span>
-            <span></span>
+
+        <a role="button"
+            class="navbar-burger burger"
+            aria-label="menu"
+            data-target="navbar-groups"
+            @click="handleToggleNavi()">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
         </a>
-    </div>
-    <div id="nav-groups" class="nav-menu" :class="{ 'is-active': isShowNav }">
-        <div class="navbar-start">
-            <div class="navbar-item has-dropdown is-hoverable" v-for="n in navigations">
-                <a class="navbar-link is-arrowless">
-                    <i class="fas" :class="n.icon"></i>
-                    <span>{{n.title}}</span>
-                </a>
-                <div class="navbar-dropdown">
-                    <router-link v-for="s in n.submenu" v-bind:key="s.title" :to="{path: s.url}" class="navbar-item" @click.native="handleCloseNav()">
-                        <i class="fas" :class="s.icon"></i>
-                        <span>{{s.title}}</span>
-                    </router-link>
+
+        <div id="navbar-groups" class="navbar-menu" :class="{ 'is-active': isShowNavi }">
+            <div class="navbar-start">
+                <div class="navbar-item has-dropdown is-hoverable" v-for="n in navigations">
+                    <a class="navbar-link is-arrowless">
+                        <i class="fas" :class="n.icon"></i>
+                        <span class="menu-title">{{n.title}}</span>
+                    </a>
+                    <div class="navbar-dropdown">
+                        <router-link class="navbar-item"
+                                     v-for="s in n.submenu"
+                                     :to="{ path: s.url }"
+                                     @click.native="handleCloseNavi()">
+                            <i class="fas" :class="s.icon"></i>
+                            <span class="menu-title">{{s.title}}</span>
+                        </router-link>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <button class="button is-light" @click="handleLogout()">
+                        <i class="fas fa-door-open"></i>
+                        ログアウト
+                    </button>
                 </div>
             </div>
         </div>
-        <div class="navbar-end">
-            <div class="navbar-item">
-                <button class="button is-light" @click="handleLogout()">
-                    <i class="fas fa-door-open"></i>
-                    ログアウト
-                </button>
-            </div>
-        </div>
     </div>
-</div>
+</nav>
