@@ -1,19 +1,65 @@
 <div class="user-list">
     <b-collapse class="card">
-        <button
-            type="button"
-            class="button is-success"
-            @click="handleNew()">
-            新規作成
-        </button>
+        <header class="card-header" slot="trigger" slot-scope="props">
+            <p class="card-header-title">
+                <i class="fas fa-users"></i>
+                ユーザー
+            </p>
+            <a class="card-header-icon">
+                <b-icon :icon="props.open ? 'angle-down' : 'angle-up'">
+                </b-icon>
+            </a>
+        </header>
+        <section class="card-content">
+            <form>
+                <div class="field is-grouped">
+                    <div class="control is-expanded">
+                        <input
+                            type="text"
+                            class="input"
+                            placeholder="例) Siphon太郎"
+                            v-model="option.q">
+                    </div>
+                    <div class="control">
+                        <button
+                            type="reset"
+                            class="button"
+                            @click="handleReset()">
+                            <i class="fa fa-times-circle"></i>
+                            クリア
+                        </button>
+                    </div>
+                </div>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button
+                            type="button"
+                            class="button is-info"
+                            @click="handleSearch()">
+                            <i class="fa fa-search"></i>
+                            検索
+                        </button>
+                    </div>
+                    <div class="control">
+                        <button
+                            type="button"
+                            class="button is-success"
+                            @click="handleNew()">
+                            <i class="fas fa-plus"></i>
+                            新規作成
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </section>
     </b-collapse>
     <div class="scrollable-table-header">
         <table class="table is-bordered is-fullwidth">
             <thead>
                 <tr>
-                    <th class="has-text-centered">名前</th>
-                    <th class="has-text-centered">E-Mail</th>
-                    <th></th>
+                    <th class="name-col has-text-centered">名前</th>
+                    <th class="email-col has-text-centered">E-Mail</th>
+                    <th class="action-buttons"></th>
                 </tr>
             </thead>
         </table>
@@ -26,7 +72,7 @@
                         表示するデータがありません
                     </td>
                 </tr>
-                <user-list-item v-for="user in users" :key="user.id" :user="user" />
+                <user-list-item v-for="user in users" :key="user.id" :user="user" @openEditModal="openEditModal"/>
             </tbody>
         </table>
     </div>

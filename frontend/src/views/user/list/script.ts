@@ -1,9 +1,9 @@
 import Vue from 'vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { ModalConfig, ToastConfig } from 'buefy/types/components';
 import { User, UserSearchOption } from '@/entity/user';
 import { FETCH, HAS_ITEMS } from '@/store/constant';
-import { SAVE_SUCCESS } from '@/views/constant';
+import { SAVE_SUCCESS, OPEN_EDIT_MODAL } from '@/views/constant';
 import UserListItem from '@/views/user/list/item/UserListItem.vue';
 import UserEdit from '@/views/user/edit/UserEdit.vue';
 
@@ -16,6 +16,7 @@ export default Vue.extend({
 
         return {
             option,
+            OPEN_EDIT_MODAL,
         };
     },
     components: {
@@ -25,6 +26,9 @@ export default Vue.extend({
         this.fetch(this.option);
     },
     computed: {
+        ...mapState('user', [
+            'users',
+        ]),
         ...mapGetters('user', [
             HAS_ITEMS,
         ]),
