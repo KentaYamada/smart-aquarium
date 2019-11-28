@@ -5,10 +5,12 @@ Python Flask &amp; Vuejs SPA(Single Page App) project template
 - Backend
     - Python3.x
     - Flask
-    - Psycopg2
+    - Flask JWT-extended
 - Frontend
-    - TypeScript
-    - SCSS
-    - Vuejs
+    - node (v12.13.1)
+    - npm (v6.12.1)
+    - TypeScript(v3.5.3)
+    - SCSS(v4.12.0)
+    - Vuejs (cli v4.0.5)
     - Buefy
     - Bulma
