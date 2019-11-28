@@ -15,7 +15,7 @@ const actions: ActionTree<UserState, RootState> = {
             .get(ROOT_URL, { params: option })
             .then((response: AxiosResponse<any>) => {
                 commit(SET_USERS, response.data.users);
-        });
+            });
     },
     [SAVE]: async ({ commit }, user: User) => {
         let promise$ = null;
