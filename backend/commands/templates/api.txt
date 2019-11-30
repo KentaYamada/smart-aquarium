@@ -1,0 +1,35 @@
+from flask import request, Blueprint
+from werkzeug.exceptions import (
+    BadRequest,
+    Conflict,
+    NotFound
+)
+from backend.libs.api_response import (
+    STATUS_OK,
+    STATUS_CREATED,
+    STATUS_NO_CONTENT,
+    ApiResponse
+)
+
+
+bp = Blueprint('{{name}}', __name__, url_prefix='/api/{{name}}s')
+
+
+@bp.route('/', methods=['GET'])
+def index():
+    pass
+
+
+@bp.route('/', methods=['POST'])
+def add():
+    pass
+
+
+@bp.route('/', methods=['PUT'])
+def edit():
+    pass
+
+
+@bp.route('/', methods=['DELETE'])
+def delete():
+    pass
