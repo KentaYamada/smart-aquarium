@@ -37,6 +37,11 @@ export const LOGOUT: string = 'logout';
 
 export const REFLESH_TOKEN: string = 'refleshToken';
 
+// -----------
+// Navigation
+// -----------
+export const NAVIGATIONS: string = 'navigations';
+
 // ----
 // User
 // ----
