@@ -14,3 +14,18 @@ Python Flask &amp; Vuejs SPA(Single Page App) project template
     - Vuejs (cli v4.0.5)
     - Buefy
     - Bulma
+
+## Development
+### Start up local server
+### Frontend
+``` sh
+cd /path/to/flask-vuejs-startup-kit/frontend
+npm run serve
+```
+
+### Backend
+``` sh
+cd /path/to/flask-vuejs-startup-kit
+python3 -B dev.py
+```
+
