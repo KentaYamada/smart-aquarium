@@ -1,6 +1,7 @@
 import { ActionTree } from 'vuex';
 import _ from 'lodash';
-import axios, { AxiosResponse } from 'axios';
+import http from '@/plugin/http';
+import { httpResponse } from 'axios';
 import { User, UserSearchOption } from '@/entity/user';
 import { UserState } from '@/store/user';
 import { RootState } from '@/store/state_type';
@@ -11,9 +12,9 @@ const ROOT_URL: string = '/api/users/';
 
 const actions: ActionTree<UserState, RootState> = {
     [FETCH]: async ({ commit }, option: UserSearchOption) => {
-        return await axios
+        return await http
             .get(ROOT_URL, { params: option })
-            .then((response: AxiosResponse<any>) => {
+            .then((response: httpResponse<any>) => {
                 commit(SET_USERS, response.data.users);
             });
     },
@@ -21,16 +22,16 @@ const actions: ActionTree<UserState, RootState> = {
         let promise$ = null;
 
         if (_.isNull(user.id)) {
-            promise$ = axios.post(ROOT_URL, user);
+            promise$ = http.post(ROOT_URL, user);
         } else {
-            promise$ = axios.put(`${ROOT_URL}${user.id}`, user);
+            promise$ = http.put(`${ROOT_URL}${user.id}`, user);
         }
 
         return await promise$;
     },
     [DELETE]: async ({ commit }, id: number) => {
         const url: string = `${ROOT_URL}${id}`;
-        return await axios.delete(url);
+        return await http.delete(url);
     },
 };
 

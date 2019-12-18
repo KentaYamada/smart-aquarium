@@ -1,5 +1,6 @@
 import { ActionTree } from 'vuex';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
+import http from '@/plugin/http';
 import { Auth } from '@/entity/auth';
 import { AuthState } from '@/store/auth';
 import { RootState } from '@/store/state_type';
@@ -22,7 +23,7 @@ const actions: ActionTree<AuthState, RootState> = {
             email: auth.email,
             password: auth.password,
         };
-        const promise$: Promise = axios.post(LOGIN_API_URL, data);
+        const promise$: Promise = http.post(LOGIN_API_URL, data);
 
         promise$.then((response: AxiosResponse) => {
             context.commit(SET_TOKEN, response.data.token);
@@ -32,7 +33,7 @@ const actions: ActionTree<AuthState, RootState> = {
     },
     [LOGOUT]: async (context: any): Promise => {
         const token: string = context.state.auth.token;
-        const promise$: Promise = axios.post(LOGOUT_API_URL, { token });
+        const promise$: Promise = http.post(LOGOUT_API_URL, { token });
         promise$.then(() => {
             context.commit(INITIALIZE);
         });
@@ -41,7 +42,7 @@ const actions: ActionTree<AuthState, RootState> = {
     },
     [REFLESH_TOKEN]: async (context: any): Promise => {
         const token: string = context.state.auth.token;
-        const promise$: Promise = axios.post(REFLESH_TOKEN_API_URL, { token });
+        const promise$: Promise = http.post(REFLESH_TOKEN_API_URL, { token });
 
         promise$.then((response: AxiosResponse) => {
             context.commit(SET_TOKEN, response.data.token);
