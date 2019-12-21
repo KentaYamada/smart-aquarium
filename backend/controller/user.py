@@ -8,7 +8,8 @@ from backend.libs.api_response import (
     STATUS_OK,
     STATUS_CREATED,
     STATUS_NO_CONTENT,
-    ApiResponse
+    ApiResponse,
+    ApiResponseBody
 )
 from backend.mapper.user import UserMapper
 from backend.model.user import User
@@ -20,8 +21,9 @@ bp = Blueprint('user', __name__, url_prefix='/api/users')
 @bp.route('/', methods=['GET'])
 def index():
     users = UserMapper.find_users()
-    response = {'users': users}
-    return ApiResponse(STATUS_OK, data=response)
+    body = ApiResponseBody()
+    body.users = users
+    return ApiResponse(STATUS_OK, data=body)
 
 
 @bp.route('/', methods=['POST'])
@@ -39,8 +41,10 @@ def add():
     if not saved:
         raise Conflict(description='Failed add data')
 
-    response = {'result': True}
-    return ApiResponse(STATUS_CREATED, 'created', response)
+    body = ApiResponseBody()
+    body.message = 'created'
+    body.result = True
+    return ApiResponse(STATUS_CREATED, body)
 
 
 @bp.route('/<int:id>', methods=['PUT'])
@@ -62,8 +66,10 @@ def edit(id):
     if not saved:
         raise Conflict(description='Failed edit data')
 
-    response = {'result': True}
-    return ApiResponse(STATUS_OK, 'edited', response)
+    body = ApiResponseBody()
+    body.message = 'edited'
+    body.result = True
+    return ApiResponse(STATUS_OK, body)
 
 
 @bp.route('/<int:id>', methods=['DELETE'])

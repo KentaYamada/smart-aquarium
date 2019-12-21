@@ -15,22 +15,34 @@ STATUS_CONFLICT = 409
 STATUS_INTERNAL_SERVER_ERROR = 500
 
 
+def json_dumps_handler(data):
+    has_dict = isinstance(data, object) and hasattr(data, '__dict__')
+    if not has_dict:
+        raise TypeError()
+    return data.__dict__
+
+
+class ApiResponseBody:
+    def __init__(self,  message='', errors=None):
+        self.message = message
+        self.errors = errors
+
+
 class ApiResponse(Response):
     """
         REST API response class
     """
-    def __init__(self, status_code, message='', data=None, errors=None):
+    def __init__(self, status_code, data=None):
         super().__init__()
         self.mimetype = 'application/json'
         self.status_code = status_code
-        body = self.__get_response_body(message, data, errors)
-        self.set_data(body)
 
-    def __get_response_body(self, message, data, errors):
-        body = {
-            'errors': errors,
-            'message': message
-        }
-        if data is not None and isinstance(data, dict):
-            body.update(data)
-        return json.dumps(body, ensure_ascii=False, indent=2)
+        if data is not None and not isinstance(data, ApiResponseBody):
+            raise TypeError()
+        body = json.dumps(
+            data,
+            default=json_dumps_handler,
+            ensure_ascii=False,
+            indent=2
+        )
+        self.set_data(body)
