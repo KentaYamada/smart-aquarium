@@ -4,28 +4,11 @@ from backend.model.user import User
 class UserMapper:
     @classmethod
     def find_users(cls):
-        # todo: convert list of object to list of dictinaries
-        users = (
-            {
-                'id': 1,
-                'name': 'Taro',
-                'email': 'taro@email.com',
-                'password': 'taro'
-            },
-            {
-                'id': 2,
-                'name': 'Jiro',
-                'email': 'jiro@email.com',
-                'password': 'jiro'
-            },
-            {
-                'id': 3,
-                'name': 'Saburo',
-                'email': 'sabuaro@email.com',
-                'password': 'saburo'
-            }
-        )
-        return users
+        return [
+            User(1, 'Taro', 'taro@email.com', 'taro'),
+            User(2, 'Jiro', 'jiro@email.com', 'jiro'),
+            User(3, 'Saburo', 'sabuaro@email.com', 'saburo')
+        ]
 
     @classmethod
     def find_user_by_email(cls, email):

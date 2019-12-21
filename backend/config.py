@@ -40,7 +40,7 @@ class ProductionConfig(BaseConfig):
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
-    ENV = 'development'
+    ENV = 'default'
     TESTING = True
     SECRET_KEY = 'secret'
 
@@ -112,10 +112,10 @@ def get_config_by_env():
         Get app configs by env
     """
     configs = {
-        'development': DevelopmentConfig(),
+        'default': DevelopmentConfig(),
         'production': ProductionConfig()
     }
     app_env = os.environ.get('APP_TYPE')
     if app_env not in configs:
-        raise RuntimeError('Config not found')
+        return configs['default']
     return configs[app_env]
