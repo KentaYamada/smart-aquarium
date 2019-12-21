@@ -6,7 +6,8 @@ from werkzeug.exceptions import (
 )
 from backend.libs.api_response import (
     STATUS_OK,
-    ApiResponse
+    ApiResponse,
+    ApiResponseBody
 )
 from backend.mapper.auth import AuthMapper
 from backend.mapper.black_list import BlackListMapper
@@ -36,15 +37,20 @@ def login():
 
     logged_in_token = AuthMapper.get_logged_in_user_token(user.id)
     if logged_in_token:
-        response = {'logged_in': True, 'token': logged_in_token}
-        return ApiResponse(STATUS_OK, 'Already logged in', response)
+        body = ApiResponseBody('Already logged in')
+        body.logged_in = True
+        body.token = logged_in_token
+        return ApiResponse(STATUS_OK, body)
 
     token = AuthMapper.generate_auth_token(user)
     if not token:
         raise InternalServerError(description='Failed publish token')
 
-    response = {'logged_in': True, 'token': token}
-    return ApiResponse(STATUS_OK, 'Login successfully', response)
+    body = ApiResponseBody('Login successfully')
+    body.logged_in = True
+    body.token = token
+
+    return ApiResponse(STATUS_OK, body)
 
 
 @bp.route('/logout', methods=['POST'])
@@ -62,8 +68,10 @@ def logout():
     if not is_disposed:
         raise InternalServerError(description='Failed dispose token')
 
-    response = {'logged_out': True, 'token': ''}
-    return ApiResponse(STATUS_OK, 'Logged out', response)
+    body = ApiResponseBody('Logged out')
+    body.logged_out = True
+    body.token = ''
+    return ApiResponse(STATUS_OK, body)
 
 
 @bp.route('/reflesh', methods=['POST'])
@@ -93,5 +101,7 @@ def reflesh():
     if not is_disposed:
         raise InternalServerError(description='Failed dispose token')
 
-    response = {'token': reflesh_token}
-    return ApiResponse(STATUS_OK, data=response)
+    body = ApiResponseBody()
+    body.token = reflesh_token
+
+    return ApiResponse(STATUS_OK, body)

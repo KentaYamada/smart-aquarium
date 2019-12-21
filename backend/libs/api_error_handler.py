@@ -1,6 +1,7 @@
 from backend.libs.api_response import (
     STATUS_INTERNAL_SERVER_ERROR,
-    ApiResponse
+    ApiResponse,
+    ApiResponseBody
 )
 
 
@@ -8,18 +9,12 @@ def api_error_handler(error):
     """
         Flask register_error_handler callback function
     """
+    body = ApiResponseBody()
     if error is None:
-        return ApiResponse(
-            STATUS_INTERNAL_SERVER_ERROR,
-            'Internal Server Error'
-        )
-
-    message = ''
+        body.message = 'Internal Server Error'
+        return ApiResponse(STATUS_INTERNAL_SERVER_ERROR, body)
     if hasattr(error, 'description') and error.description:
-        message = error.description
-
-    errors = None
+        body.message = error.description
     if hasattr(error, 'response') and error.response is not None:
-        errors = error.response
-
-    return ApiResponse(error.code, message, errors=errors)
+        body.errors = error.response
+    return ApiResponse(error.code, body)
