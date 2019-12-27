@@ -128,3 +128,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# backend
+/backend/*.db

@@ -17,21 +17,18 @@ class BaseConfig:
     TESTING = False
     SECRET_KEY = ''  # required
 
-    # JWT config (if needed)
-    # JWT_BLACKLIST_ENABLED = True
-    # JWT_SECRET_KEY = ''
-    # JWT_BACKLIST_TOKEN_CHECKS = ['identity']
-    # JWT_ACCESS_TOKEN_EXPIRES = False
-    # JWT_REFRESH_TOKEN_EXPIRES = False
-
-    # database config (if needed)
-    # DATABASE = {}
+    # database config
+    DATABASE = 'smart_aquarium.db'
 
     def __str__(self):
         return 'app.config.{0}'.format(type(self).__name__)
 
     def get_loggin_config(self):
         raise NotImplementedError()
+
+    def get_database_path(self):
+        root_path = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(root_path, self.DATABASE)
 
 
 class ProductionConfig(BaseConfig):

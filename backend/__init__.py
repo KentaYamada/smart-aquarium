@@ -1,5 +1,4 @@
 from flask import Flask
-# from flask_jwt_extended import JWTManager
 from werkzeug.exceptions import (
     BadRequest,
     Conflict,
@@ -10,11 +9,6 @@ from werkzeug.exceptions import (
 )
 from backend.config import get_config_by_env
 from backend.libs.api_error_handler import api_error_handler
-# from backend.libs.jwt_handler import (
-#     user_loader_handler,
-#     user_loader_error_handler,
-#     token_in_blacklist_loader_handler
-# )
 from backend.controller import register_blueprints
 
 
@@ -34,11 +28,3 @@ app.register_error_handler(Unauthorized, api_error_handler)
 
 # Register blueprints
 register_blueprints(app)
-
-# JWT authorization (if needed)
-# jwt = JWTManager(app)
-
-# Register handlers
-# jwt.user_loader_callback_loader(user_loader_handler)
-# jwt.user_loader_error_loader(user_loader_error_handler)
-# jwt.token_in_blacklist_loader(token_in_blacklist_loader_handler)

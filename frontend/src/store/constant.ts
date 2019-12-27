@@ -20,23 +20,6 @@ export const SAVE: string = 'save';
 
 export const DELETE: string = 'delete';
 
-/**
- * Auth
- */
-export const IS_LOGGED_IN: string = 'isLoggedIn';
-
-export const GET_TOKEN: string = 'getToken';
-
-export const SET_AUTH: string = 'setAuth';
-
-export const SET_TOKEN: string = 'setToken';
-
-export const LOGIN: string = 'login';
-
-export const LOGOUT: string = 'logout';
-
-export const REFLESH_TOKEN: string = 'refleshToken';
-
 // -----------
 // Navigation
 // -----------

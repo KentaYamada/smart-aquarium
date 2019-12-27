@@ -1,15 +1,13 @@
 <template>
-    <section class="section">
+    <div id="app">
         <navigation/>
-        <div class="container">
-            <router-view/>
-        </div>
-    </section>
+        <router-view/>
+    </div>
 </template>
 
 <style scoped lang="scss">
-.container {
-    margin-top: 20px;
+#app {
+    background-color: #eee;
 }
 </style>
 
