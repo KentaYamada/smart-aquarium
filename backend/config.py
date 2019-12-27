@@ -26,6 +26,10 @@ class BaseConfig:
     def get_loggin_config(self):
         raise NotImplementedError()
 
+    def get_database_path(self):
+        root_path = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(root_path, self.DATABASE)
+
 
 class ProductionConfig(BaseConfig):
     ENV = 'production'
