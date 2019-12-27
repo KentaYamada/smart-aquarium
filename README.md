@@ -14,16 +14,23 @@
     - Buefy
     - Bulma
 
+## Build database
+``` sh
+cd /path/to/smart-aquarium
+export FLASK_APP=./manage.py
+flask run create-db
+```
+
 ## Development
 ### Start up local server
 ### Frontend
 ``` sh
-cd /path/to/flask-vuejs-startup-kit/frontend
+cd /path/to/smart-aquarium/frontend
 npm run serve
 ```
 
 ### Backend
 ``` sh
-cd /path/to/flask-vuejs-startup-kit
+cd /path/to/smart-aquarium
 python3 -B dev.py
 ```
