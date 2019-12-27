@@ -1,11 +1,10 @@
-# flask-vuejs-startup-kit
-Python Flask &amp; Vuejs SPA(Single Page App) project template
+# Smart aquarium
+水槽の水温、水質を管理するアプリケーション
 
 ## Features
 - Backend
     - Python3.x
     - Flask
-    - Flask JWT-extended
 - Frontend
     - node (v12.13.1)
     - npm (v6.12.1)
@@ -28,4 +27,3 @@ npm run serve
 cd /path/to/flask-vuejs-startup-kit
 python3 -B dev.py
 ```
-
