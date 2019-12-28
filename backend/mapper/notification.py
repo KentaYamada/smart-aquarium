@@ -6,10 +6,10 @@ from backend.model.notification import Notification
 class NotificationMapper:
     FETCH_SQL = """
         select
-            datetime(created_at),
+            datetime(created_at) as created_at,
             message
         from notifications
-        order by created_at desc
+        order by datetime(created_at) desc
         limit 20;
     """
 
