@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from '@/store';
+import Configuration from '@/views/configuration/Configuration.vue';
 import Top from '@/views/top/Top.vue';
 
 
@@ -11,6 +12,11 @@ const routes = [
         path: '/',
         name: 'top',
         component: Top,
+    },
+    {
+        path: '/configurations',
+        name: 'configuration',
+        component: Configuration,
     },
 ];
 

@@ -20,3 +20,19 @@ create table configurations (
     temperature_upper_limit real not null,
     measurement_trials integer not null
 );
+
+insert into configurations (
+    id,
+    ph_lower_limit,
+    ph_upper_limit,
+    temperature_lower_limit,
+    temperature_upper_limit,
+    measurement_trials
+) values (
+    1,
+    6.5,
+    7.0,
+    22.0,
+    24.0,
+    3
+);

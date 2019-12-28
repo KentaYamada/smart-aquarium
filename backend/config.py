@@ -40,6 +40,7 @@ class DevelopmentConfig(BaseConfig):
     ENV = 'default'
     TESTING = True
     SECRET_KEY = 'secret'
+    DATABASE = 'smart_aquarium.db'
 
     def get_loggin_config(self):
         log_dir = '{0}/log'.format(os.path.dirname(os.path.abspath(__file__)))

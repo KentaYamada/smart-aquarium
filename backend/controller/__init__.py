@@ -1,4 +1,5 @@
 from flask import Flask
+from backend.controller import configuration
 from backend.controller import notification
 from backend.controller import user
 
@@ -8,6 +9,7 @@ def register_blueprints(app):
         raise ValueError('Invalid argument: app')
     blueprints = [
         notification.bp,
+        configuration.bp,
         user.bp
     ]
     for b in blueprints:
