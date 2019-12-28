@@ -20,11 +20,6 @@ const state: Navigation = {
             icon: 'fa-user-cog',
             submenu: [
                 {
-                    title: 'ユーザー',
-                    icon: 'fa-user',
-                    url: '/users',
-                },
-                {
                     title: '計測設定',
                     icon: 'fa-cogs',
                     url: '/configurations',

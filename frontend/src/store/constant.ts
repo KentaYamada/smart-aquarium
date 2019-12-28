@@ -34,9 +34,3 @@ export const NAVIGATIONS: string = 'navigations';
 // Notification
 // ------------
 export const SET_NOTIFICATIONS: string = 'setNotifications';
-
-// ----
-// User
-// ----
-export const SET_USERS: string = 'setUsers';
-
