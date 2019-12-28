@@ -25,6 +25,11 @@ export const DELETE: string = 'delete';
 // -----------
 export const NAVIGATIONS: string = 'navigations';
 
+// ------------
+// Notification
+// ------------
+export const SET_NOTIFICATIONS: string = 'setNotifications';
+
 // ----
 // User
 // ----
