@@ -16,6 +16,22 @@
 
         <div id="navbar-groups" class="navbar-menu" :class="{ 'is-active': isShowNavi }">
             <div class="navbar-start">
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link is-arrowless">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span class="menu-title">アラート</span>
+                    </a>
+                    <div class="navbar-dropdown">
+                        <div class="navbar-item" v-if="!hasItems">
+                            <p>アラートはありません</p>
+                        </div>
+                        <div class="navbar-item" v-for="n in notifications">
+                            <span class="created-at">{{ n.created_at }}</span>
+                            <span>{{ n.message }}</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="navbar-item has-dropdown is-hoverable" v-for="n in navigations">
                     <a class="navbar-link is-arrowless">
                         <i class="fas" :class="n.icon"></i>
@@ -31,9 +47,6 @@
                         </router-link>
                     </div>
                 </div>
-            </div>
-
-            <div class="navbar-end">
             </div>
         </div>
     </div>
