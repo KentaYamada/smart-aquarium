@@ -1,4 +1,4 @@
-create table aquarium_water_quarities (
+create table aquarium_water_qualities (
     id integer primary key autoincrement,
     measured_at text not null,
     ph real not null,
