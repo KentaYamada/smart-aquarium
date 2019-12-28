@@ -1,30 +1,47 @@
 import Vue from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 import { AxiosError, AxiosResponse } from 'axios';
+import _ from 'lodash';
+import { ToastConfig } from 'buefy/types/components';
 import Configuration from '@/entity/configuration';
-import { FETCH } from '@/store/constant';
-import { ConfigurationForm } from '@/components/configuration-form/ConfigurationForm.vue';
+import { FETCH, SAVE, SET_CONFIGURATION } from '@/store/constant';
 
 export default Vue.extend({
-    components: {
-        ConfigurationForm,
-    },
     data() {
         return {
-            errors: {}
+            config: {},
+            errors: {},
         };
     },
     mounted() {
         this.fetch();
-    },
-    compouted: {
-        ...mapState('configuration', [
-            'config',
-        ]),
+        this.config = _.cloneDeep(this.$store.state.configuration.config);
     },
     methods: {
         ...mapActions('configuration', [
             FETCH,
+            SAVE,
         ]),
+        ...mapMutations('configuration', [
+            SET_CONFIGURATION,
+        ]),
+        handleClickSave(): void {
+            this.save(this.config)
+                .then((response: AxiosResponse) => {
+                    const option: ToastConfig = {
+                        message: response.data.message,
+                        type: 'is-success',
+                    };
+                    this.$buefy.toast.open(option);
+                    this.fetch();
+                })
+                .catch(() => {
+                    const option: ToastConfig = {
+                        message: '保存に失敗しました',
+                        type: 'is-danger',
+                    };
+                    this.$buefy.toast.open(option);
+                });
+        },
     },
 });

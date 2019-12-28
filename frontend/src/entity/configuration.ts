@@ -9,11 +9,11 @@ export default class Configuration {
     public measurement_trials: number;
 
     constructor(
-        ph_lower_limit: number,
-        ph_upper_limit: number,
-        temperature_lower_limit: number,
-        temperature_upper_limit: number,
-        measurement_trials: number
+        ph_lower_limit: number = 0.0,
+        ph_upper_limit: number = 0.0,
+        temperature_lower_limit: number = 0.0,
+        temperature_upper_limit: number = 0.0,
+        measurement_trials: number = 0
     ) {
         this.ph_lower_limit = ph_lower_limit;
         this.ph_upper_limit = ph_upper_limit;
