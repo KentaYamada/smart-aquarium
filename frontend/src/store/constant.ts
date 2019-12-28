@@ -21,6 +21,11 @@ export const SAVE: string = 'save';
 export const DELETE: string = 'delete';
 
 // -----------
+// Configuration
+// -----------
+export const SET_CONFIGURATION: string = 'setConfiguration';
+
+// -----------
 // Navigation
 // -----------
 export const NAVIGATIONS: string = 'navigations';
