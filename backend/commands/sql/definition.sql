@@ -9,7 +9,7 @@ create table aquarium_water_quarities (
 create table notifications (
     id integer primary key autoincrement,
     created_at text not null,
-    maessage text not null
+    message text not null
 );
 
 create table configurations (
