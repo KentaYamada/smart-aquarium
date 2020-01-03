@@ -1,3 +1,70 @@
-<div>
-    <p>Developing...</p>
+<div class="aquarium-water-quality-monitor">
+    <b-collapse class="card" aria-id="">
+        <div class="card-header" slot="trigger" slot-scope="props" role="button" aria-controls="">
+            <p class="card-header-title">
+                <i class="fas fa-fish"></i>
+                水槽の状態
+            </p>
+            <a class="card-header-icon">
+                <b-icon :icon="props.open ? 'angle-down' : 'angle-up'"></b-icon>
+            </a>
+        </div>
+        <div class="card-content">
+            <form>
+                <div class="field">
+                    <label class="label">計測日時</label>
+                </div>
+                <div class="field is-grouped">
+                    <b-datepicker icon="calendar-alt" editable></b-datepicker>
+                    <div class="control has-icons-left">
+                        <input type="number" class="input has-text-right">
+                        <span class="icon is-medium is-left">
+                            <i class="fas fa-clock"></i>
+                        </span>
+                    </div>
+                    <p class="tilde">〜</p>
+                    <div class="control has-icons-left">
+                        <input type="number" class="input has-text-right">
+                        <span class="icon is-medium is-left">
+                            <i class="fas fa-clock"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="field is-grouped is-grouped-right">
+                    <div class="control">
+                        <button type="button" class="button" @click="handleClickReset()">
+                            <i class="fas fa-times"></i>
+                            <span class="button-text">クリア</span>
+                        </button>
+                    </div>
+                    <div class="control">
+                        <button type="button" class="button is-info" @click="handleClickUpdate()">
+                            <i class="fas fa-sync-alt"></i>
+                            <span class="button-text">更新</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </b-collapse>
+
+    <div class="box ph-graph-container">
+        <h2>
+            <i class="fas fa-tint"></i>
+            pH
+        </h2>
+        <p class="has-text-centered" v-if="!hasItems">表示するデータがありません</p>
+        <water-quality-graph v-if="hasItems"></water-quality-graph>
+    </div>
+
+    <div class="box temperature-graph-container">
+        <h2>
+            <i class="fas fa-thermometer-half"></i>
+            水温
+        </h2>
+        <p class="has-text-centered" v-if="!hasItems">表示するデータがありません</p>
+        <water-quality-graph v-if="hasItems"></water-quality-graph>
+    </div>
+
+    <b-loading :is-full-page="true" :active.async="isLoading" :can-cancel="false"></b-loading>
 </div>
