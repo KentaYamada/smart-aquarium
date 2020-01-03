@@ -25,6 +25,10 @@ export const DELETE: string = 'delete';
 // ----------------------
 export const SET_AQUARIUM_WATER_QUARITIES: string = 'setAquariumWaterQuarities';
 
+export const GET_PH_GRAPH_DATA: string = 'getPhGraphData';
+
+export const GET_TEMPERATURE_GRAPH_DATA: string = 'getTemperatureGraphData';
+
 // -----------
 // Configuration
 // -----------

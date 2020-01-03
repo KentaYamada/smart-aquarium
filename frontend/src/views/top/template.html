@@ -54,7 +54,11 @@
             pH
         </h2>
         <p class="has-text-centered" v-if="!hasItems">表示するデータがありません</p>
-        <water-quality-graph v-if="hasItems"></water-quality-graph>
+        <water-quality-graph
+            v-if="hasItems"
+            :chartData="getPhGraphData"
+            :chartOptions="phGraphOptions">
+        </water-quality-graph>
     </div>
 
     <div class="box temperature-graph-container">
@@ -63,7 +67,11 @@
             水温
         </h2>
         <p class="has-text-centered" v-if="!hasItems">表示するデータがありません</p>
-        <water-quality-graph v-if="hasItems"></water-quality-graph>
+        <water-quality-graph
+            v-if="hasItems"
+            :chartData="getTemperatureGraphData"
+            :chartOptions="temperatureGraphOptions">
+        </water-quality-graph>
     </div>
 
     <b-loading :is-full-page="true" :active.async="isLoading" :can-cancel="false"></b-loading>
