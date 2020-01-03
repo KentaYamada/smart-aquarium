@@ -20,6 +20,11 @@ export const SAVE: string = 'save';
 
 export const DELETE: string = 'delete';
 
+// ----------------------
+// Aquarium Water Quality
+// ----------------------
+export const SET_AQUARIUM_WATER_QUARITIES: string = 'setAquariumWaterQuarities';
+
 // -----------
 // Configuration
 // -----------
