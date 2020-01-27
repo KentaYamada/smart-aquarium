@@ -1,9 +1,10 @@
-create table water_quarities (
+create table water_qualities (
     id integer primary key autoincrement,
-    measured_at text not null,
+    measured_date text not null,
+    measured_time text not null,
     ph real not null,
     temperature real not null,
-    unique(measured_at)
+    unique(measured_date, measured_time)
 );
 
 create table notifications (
